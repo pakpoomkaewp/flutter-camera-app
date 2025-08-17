@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_camera_app/screens/camera_screen.dart';
-import 'package:flutter_camera_app/providers/gallery_provider.dart';
+// Using barrel export for cleaner imports (alternative approach)
+// This imports ALL providers from the providers folder
+import 'package:flutter_camera_app/providers/providers.dart';
+// Alternative: Direct import (what we used before)
+// import 'package:flutter_camera_app/providers/gallery_provider.dart';
 
 void main() {
   runApp(const MyApp());

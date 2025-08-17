@@ -2,7 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_camera_app/providers/gallery_provider.dart';
+// 📦 BARREL IMPORT DEMONSTRATION:
+// Using the barrel export for cleaner, more maintainable imports
+import 'package:flutter_camera_app/providers/providers.dart';
+
+// 🔄 ALTERNATIVE APPROACH (direct import):
+// import 'package:flutter_camera_app/providers/gallery_provider.dart';
+//
+// 💡 WHY BARREL IMPORT IS BETTER:
+// - Single import line for multiple providers
+// - Easier to maintain when adding new providers
+// - Consistent import pattern across the app
 
 class GalleryScreen extends StatelessWidget {
   const GalleryScreen({super.key});

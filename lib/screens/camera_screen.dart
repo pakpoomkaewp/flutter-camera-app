@@ -5,8 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import 'package:flutter_camera_app/providers/gallery_provider.dart';
+// 📦 USING BARREL EXPORT: Import all providers with one line
+import 'package:flutter_camera_app/providers/providers.dart';
 import 'gallery_screen.dart';
+
+// 💭 COMPARISON:
+// Before (direct imports): Would need individual imports for each provider
+//   import 'package:flutter_camera_app/providers/gallery_provider.dart';
+//   import 'package:flutter_camera_app/providers/user_provider.dart';     // if existed
+//   import 'package:flutter_camera_app/providers/settings_provider.dart'; // if existed
+//
+// After (barrel import): One line imports everything from providers folder
+//   import 'package:flutter_camera_app/providers/providers.dart';
+//
+// 🎯 RESULT: Cleaner code, easier maintenance, better scalability
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
