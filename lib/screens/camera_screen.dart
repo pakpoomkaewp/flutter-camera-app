@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:flutter_camera_app/providers/gallery_provider.dart';
 import 'gallery_screen.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -102,12 +104,25 @@ class _CameraScreenState extends State<CameraScreen> {
 
       print('Picture saved permanently to $newPath');
 
+      // 4. Add the new image to the gallery provider
+      final File newImageFile = File(newPath);
+      if (mounted) {
+        context.read<GalleryProvider>().addImage(newImageFile);
+      }
+
       // Optional: Show a confirmation to the user
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Photo saved!')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Photo saved!')));
+      }
     } catch (e) {
       print('Error taking picture: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error saving photo: $e')));
+      }
     }
   }
 }
