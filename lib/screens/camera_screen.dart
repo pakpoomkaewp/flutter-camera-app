@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -70,8 +74,24 @@ class _CameraScreenState extends State<CameraScreen> {
     }
     try {
       final XFile picture = await _controller!.takePicture();
-      // TODO: Navigate to a new screen to display the picture and save it.
       print('Picture saved to ${picture.path}');
+
+      // 1. Get the application's private documents directory
+      final Directory appDir = await getApplicationDocumentsDirectory();
+
+      // 2. Create a unique filename
+      final String filename = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final String newPath = path.join(appDir.path, filename);
+
+      // 3. Copy the file to the new path
+      await picture.saveTo(newPath);
+
+      print('Picture saved permanently to $newPath');
+
+      // Optional: Show a confirmation to the user
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Photo saved!')));
     } catch (e) {
       print('Error taking picture: $e');
     }
