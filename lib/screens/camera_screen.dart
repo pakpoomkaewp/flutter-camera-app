@@ -17,6 +17,7 @@ class _CameraScreenState extends State<CameraScreen> {
   CameraController? _controller;
   List<CameraDescription>? _cameras;
   bool _isReady = false;
+  FlashMode _flashMode = FlashMode.off;
 
   @override
   void initState() {
@@ -64,6 +65,11 @@ class _CameraScreenState extends State<CameraScreen> {
         title: const Text('Camera'),
         actions: [
           IconButton(
+            icon: Icon(_getFlashIcon()),
+            onPressed: _toggleFlash,
+            tooltip: 'Toggle Flash',
+          ),
+          IconButton(
             icon: const Icon(Icons.photo_library),
             onPressed: () {
               Navigator.of(context).push(
@@ -108,6 +114,51 @@ class _CameraScreenState extends State<CameraScreen> {
       ).showSnackBar(SnackBar(content: Text('Photo saved!')));
     } catch (e) {
       print('Error taking picture: $e');
+    }
+  }
+
+  Future<void> _toggleFlash() async {
+    if (_controller == null || !_controller!.value.isInitialized) {
+      return;
+    }
+
+    try {
+      // Cycle through flash modes: off -> auto -> always -> off
+      FlashMode newFlashMode;
+      switch (_flashMode) {
+        case FlashMode.off:
+          newFlashMode = FlashMode.auto;
+          break;
+        case FlashMode.auto:
+          newFlashMode = FlashMode.always;
+          break;
+        case FlashMode.always:
+          newFlashMode = FlashMode.off;
+          break;
+        default:
+          newFlashMode = FlashMode.off;
+      }
+
+      await _controller!.setFlashMode(newFlashMode);
+
+      setState(() {
+        _flashMode = newFlashMode;
+      });
+    } catch (e) {
+      print('Error toggling flash: $e');
+    }
+  }
+
+  IconData _getFlashIcon() {
+    switch (_flashMode) {
+      case FlashMode.off:
+        return Icons.flash_off;
+      case FlashMode.auto:
+        return Icons.flash_auto;
+      case FlashMode.always:
+        return Icons.flash_on;
+      default:
+        return Icons.flash_off;
     }
   }
 }
