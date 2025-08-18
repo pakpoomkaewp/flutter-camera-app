@@ -123,7 +123,7 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     try {
-      // Cycle through flash modes: off -> auto -> always -> off
+      // Cycle through flash modes: off -> auto -> always -> torch -> off
       FlashMode newFlashMode;
       switch (_flashMode) {
         case FlashMode.off:
@@ -133,10 +133,11 @@ class _CameraScreenState extends State<CameraScreen> {
           newFlashMode = FlashMode.always;
           break;
         case FlashMode.always:
+          newFlashMode = FlashMode.torch;
+          break;
+        case FlashMode.torch:
           newFlashMode = FlashMode.off;
           break;
-        default:
-          newFlashMode = FlashMode.off;
       }
 
       await _controller!.setFlashMode(newFlashMode);
@@ -157,8 +158,8 @@ class _CameraScreenState extends State<CameraScreen> {
         return Icons.flash_auto;
       case FlashMode.always:
         return Icons.flash_on;
-      default:
-        return Icons.flash_off;
+      case FlashMode.torch:
+        return Icons.flashlight_on;
     }
   }
 }
