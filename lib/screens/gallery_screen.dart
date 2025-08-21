@@ -19,22 +19,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
     _imageFiles = _loadImages();
   }
 
-  Future<List<File>> _loadImages() async {
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final List<FileSystemEntity> entities = appDir.listSync();
-    final List<File> imageFiles = entities
-        .where((entity) => entity is File && entity.path.endsWith('.jpg'))
-        .map((entity) => entity as File)
-        .toList();
-
-    // Sort by date, newest first
-    imageFiles.sort(
-      (a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()),
-    );
-
-    return imageFiles;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,5 +51,21 @@ class _GalleryScreenState extends State<GalleryScreen> {
         },
       ),
     );
+  }
+
+  Future<List<File>> _loadImages() async {
+    final Directory appDir = await getApplicationDocumentsDirectory();
+    final List<FileSystemEntity> entities = appDir.listSync();
+    final List<File> imageFiles = entities
+        .where((entity) => entity is File && entity.path.endsWith('.jpg'))
+        .map((entity) => entity as File)
+        .toList();
+
+    // Sort by date, newest first
+    imageFiles.sort(
+      (a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()),
+    );
+
+    return imageFiles;
   }
 }

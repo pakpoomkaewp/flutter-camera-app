@@ -25,27 +25,6 @@ class _CameraScreenState extends State<CameraScreen> {
     _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    _cameras = await availableCameras();
-    if (_cameras == null || _cameras!.isEmpty) {
-      // Handle case where no cameras are available
-      print("No cameras found");
-      return;
-    }
-
-    _controller = CameraController(
-      _cameras![0], // Use the first available camera (usually the back one)
-      ResolutionPreset.high,
-    );
-
-    await _controller!.initialize();
-    if (!mounted) return;
-
-    setState(() {
-      _isReady = true;
-    });
-  }
-
   @override
   void dispose() {
     // IMPORTANT: Dispose of the controller when the widget is disposed.
@@ -86,6 +65,27 @@ class _CameraScreenState extends State<CameraScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Future<void> _initializeCamera() async {
+    _cameras = await availableCameras();
+    if (_cameras == null || _cameras!.isEmpty) {
+      // Handle case where no cameras are available
+      print("No cameras found");
+      return;
+    }
+
+    _controller = CameraController(
+      _cameras![0], // Use the first available camera (usually the back one)
+      ResolutionPreset.high,
+    );
+
+    await _controller!.initialize();
+    if (!mounted) return;
+
+    setState(() {
+      _isReady = true;
+    });
   }
 
   Future<void> _takePicture() async {
